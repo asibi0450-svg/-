@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>今日の誰かの日記</title>
+
 <style>
 body {
   font-family: sans-serif;
@@ -31,8 +32,15 @@ body {
 }
 
 .main-text {
-  font-size: 1.25em;
+  font-size: 1.3em;
   margin-top: 10px;
+  white-space: pre-line;
+}
+
+.sub-text {
+  font-size: 0.95em;
+  color: #555;
+  margin-top: 15px;
   white-space: pre-line;
 }
 
@@ -43,11 +51,6 @@ body {
   border: none;
   color: #0077cc;
   cursor: pointer;
-}
-
-.translation {
-  color: #555;
-  margin-top: 15px;
 }
 
 .note {
@@ -65,21 +68,32 @@ body {
 <script>
 
 function toggleText(button) {
-  const container = button.closest(".text-container");
-  const textElement = container.querySelector(".main-text");
 
-  const fullText = container.dataset.full;
-  const shortText = container.dataset.short;
+  const container = button.closest(".text-container");
+
+  const main = container.querySelector(".main-text");
+  const sub = container.querySelector(".sub-text");
+
+  const fullMain = container.dataset.fullMain;
+  const shortMain = container.dataset.shortMain;
+
+  const fullSub = container.dataset.fullSub;
+  const shortSub = container.dataset.shortSub;
 
   if (button.textContent === "続きを読む") {
-    textElement.textContent = fullText;
+    main.textContent = fullMain;
+    if(sub) sub.textContent = fullSub;
     button.textContent = "小さくまとめる";
-    window.scrollTo({ top: container.offsetTop - 40, behavior: "smooth" });
   } else {
-    textElement.textContent = shortText;
+    main.textContent = shortMain;
+    if(sub) sub.textContent = shortSub;
     button.textContent = "続きを読む";
-    window.scrollTo({ top: container.offsetTop - 40, behavior: "smooth" });
   }
+
+  window.scrollTo({
+    top: container.offsetTop - 40,
+    behavior: "smooth"
+  });
 }
 
 fetch("data.json")
@@ -102,10 +116,17 @@ fetch("data.json")
   filtered.forEach(item => {
 
     const previewLength = 200;
-    const fullText = item.text_original;
-    const shortText = fullText.length > previewLength
-      ? fullText.substring(0, previewLength) + "..."
-      : fullText;
+
+    const mainText = item.text_translation || item.text_original;
+    const subText = item.text_translation ? item.text_original : "";
+
+    const shortMain = mainText.length > previewLength
+      ? mainText.substring(0, previewLength) + "..."
+      : mainText;
+
+    const shortSub = subText.length > previewLength
+      ? subText.substring(0, previewLength) + "..."
+      : subText;
 
     diaryDiv.innerHTML += `
       <div class="entry">
@@ -122,20 +143,24 @@ fetch("data.json")
         </div>
 
         <div class="text-container"
-             data-full="${fullText.replace(/"/g, '&quot;')}"
-             data-short="${shortText.replace(/"/g, '&quot;')}">
+          data-full-main="${mainText.replace(/"/g,'&quot;')}"
+          data-short-main="${shortMain.replace(/"/g,'&quot;')}"
+          data-full-sub="${subText.replace(/"/g,'&quot;')}"
+          data-short-sub="${shortSub.replace(/"/g,'&quot;')}">
 
           <button class="toggle-btn" onclick="toggleText(this)">
             続きを読む
           </button>
 
-          <p class="main-text">${shortText}</p>
-        </div>
+          <p class="main-text">${shortMain}</p>
 
-        ${item.text_translation ? `
-          <p class="translation">${item.text_translation}</p>
-          <div class="note">※ 日本語訳はGPTによる翻訳です。</div>
-        ` : ""}
+          ${subText ? `<p class="sub-text">${shortSub}</p>` : ""}
+
+          <div class="note">
+            ※ 日本語訳はGPTによる翻訳です。
+          </div>
+
+        </div>
 
         <div class="note">
           <a href="${item.source}" target="_blank">出典を見る</a>
