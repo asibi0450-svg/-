@@ -12,7 +12,27 @@ body {
   line-height: 1.7;
 }
 .entry {
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+.translation {
+  color: #555;
+  margin-top: 10px;
+}
+.note {
+  font-size: 0.85em;
+  color: #777;
+}
+.author-bio {
+  background: #f5f5f5;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 0.9em;
+}
+.small-link {
+  font-size: 0.75em;
+  margin-left: 5px;
 }
 </style>
 </head>
@@ -35,17 +55,37 @@ fetch("data.json")
 
   if(filtered.length === 0){
     diaryDiv.innerHTML = "今日はまだ日記がありません。";
-  } else {
-    filtered.forEach(item => {
-      diaryDiv.innerHTML += `
-        <div class="entry">
-          <h2>${item.year}年 ${item.author}</h2>
-          <p>${item.text}</p>
-<p><a href="${item.source}" target="_blank">出典を見る</a></p>
-        </div>
-      `;
-    });
+    return;
   }
+
+  filtered.forEach(item => {
+    diaryDiv.innerHTML += `
+      <div class="entry">
+        <h2>
+          ${item.year}年 ${item.author.name}
+          (${item.author.birth_year}–${item.author.death_year})
+        </h2>
+
+        <div class="author-bio">
+          ${item.author.summary}
+          <a class="small-link" href="${item.author.reference_url}" target="_blank">
+            [${item.author.reference_label}]
+          </a>
+        </div>
+
+        <p>${item.text_original}</p>
+
+        ${item.text_translation ? `
+          <p class="translation">${item.text_translation}</p>
+          <div class="note">※ 日本語訳はGPTによる翻訳です。</div>
+        ` : ""}
+
+        <div class="note">
+          <a href="${item.source}" target="_blank">出典を見る</a>
+        </div>
+      </div>
+    `;
+  });
 })
 .catch(error => {
   document.getElementById("diary").innerHTML = "データの読み込みでエラーが出ています。";
