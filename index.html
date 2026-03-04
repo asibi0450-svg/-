@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>今日の誰かの日記</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  line-height: 1.7;
+  background-color: #f7f7f7;
+}
+
+h1 {
+  text-align: center;
+}
+
+.entry {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>今日の誰かの日記</h1>
+<div id="diary"></div>
+
+<script>
+fetch("data.json")
+.then(res => res.json())
+.then(data => {
+  const today = new Date();
+  const month = String(today.getMonth()+1).padStart(2,'0');
+  const day = String(today.getDate()).padStart(2,'0');
+  const todayKey = month + "-" + day;
+
+  const filtered = data.filter(d => d.date === todayKey);
+
+  const container = document.getElementById("diary");
+
+  if(filtered.length === 0){
+    container.innerHTML = "<p>今日はまだ日記がありません。</p>";
+  } else {
+    filtered.forEach(d => {
+      container.innerHTML += `
+        <div class="entry">
+          <h2>${d.year}年 ${d.author}</h2>
+          <p>${d.text}</p>
+        </div>
+      `;
+    });
+  }
+});
+</script>
+
+</body>
+</html>
