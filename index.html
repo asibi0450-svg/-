@@ -12,7 +12,6 @@ body {
   background: #f7f7f7;
 }
 
-/* 固定ヘッダー */
 .header {
   position: fixed;
   top: 0;
@@ -26,22 +25,19 @@ body {
   z-index: 1000;
 }
 
-/* タイムライン */
 .timeline {
   max-width: 600px;
   margin: 0 auto;
 }
 
-/* 投稿カード */
 .entry {
   background: white;
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
   position: relative;
-  padding-bottom: 40px;
+  padding-bottom: 45px;
 }
 
-/* ヘッダー部 */
 .entry-header {
   display: flex;
   align-items: center;
@@ -65,15 +61,20 @@ body {
   margin-left: 8px;
 }
 
-/* 本文 */
 .main-text {
   font-size: 18px;
   line-height: 1.6;
-  margin: 10px 0 5px 0;
+  margin: 10px 0 3px 0;
   white-space: pre-line;
 }
 
-/* 原文 */
+.read-more {
+  font-size: 18px;
+  color: #1d9bf0;
+  cursor: pointer;
+  display: inline;
+}
+
 .original-text {
   font-size: 18px;
   line-height: 1.6;
@@ -82,16 +83,6 @@ body {
   white-space: pre-line;
 }
 
-/* 続きを読む（本文の続き風） */
-.read-more {
-  font-size: 18px;
-  color: #1d9bf0;
-  cursor: pointer;
-  display: inline;
-  margin-left: 5px;
-}
-
-/* 原文ボタン */
 .toggle-btn {
   font-size: 12px;
   background: none;
@@ -102,7 +93,6 @@ body {
   margin-left: 10px;
 }
 
-/* 左下 日付 */
 .meta-left {
   font-size: 12px;
   color: #888;
@@ -113,7 +103,6 @@ body {
   align-items: center;
 }
 
-/* 右下 略歴 */
 .meta-right {
   font-size: 12px;
   color: #666;
@@ -133,23 +122,23 @@ body {
 <script>
 
 function toggleMain(span) {
-  const container = span.closest(".entry");
-  const text = container.querySelector(".main-text");
+  const entry = span.closest(".entry");
+  const textDiv = entry.querySelector(".main-text");
   const full = span.dataset.full;
   const short = span.dataset.short;
 
   if (span.textContent === "続きを読む") {
-    text.textContent = full;
+    textDiv.textContent = full;
     span.textContent = "小さくまとめる";
   } else {
-    text.textContent = short;
+    textDiv.textContent = short;
     span.textContent = "続きを読む";
   }
 }
 
 function toggleOriginal(button) {
-  const container = button.closest(".entry");
-  const original = container.querySelector(".original-text");
+  const entry = button.closest(".entry");
+  const original = entry.querySelector(".original-text");
 
   if (original.style.display === "none") {
     original.style.display = "block";
@@ -193,21 +182,18 @@ fetch("data.json")
           </div>
         </div>
 
-        <div class="main-text">
-          ${shortText}
-          ${fullText.length > previewLength ? `
-            <span class="read-more"
-              data-full="${fullText.replace(/"/g,'&quot;')}"
-              data-short="${shortText.replace(/"/g,'&quot;')}"
-              onclick="toggleMain(this)">
-              続きを読む
-            </span>
-          ` : ""}
-        </div>
+        <div class="main-text">${shortText}</div>
 
-        <div class="original-text">
-          ${item.text_original}
-        </div>
+        ${fullText.length > previewLength ? `
+          <span class="read-more"
+            data-full="${fullText.replace(/"/g,'&quot;')}"
+            data-short="${shortText.replace(/"/g,'&quot;')}"
+            onclick="toggleMain(this)">
+            続きを読む
+          </span>
+        ` : ""}
+
+        <div class="original-text">${item.text_original}</div>
 
         <div class="meta-left">
           ${item.year}年 ${todayKey}
