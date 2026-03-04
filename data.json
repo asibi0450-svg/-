@@ -1,16 +1,18 @@
 [
   {
     "date": "03-04",
-    "author": "正岡子規",
-    "year": "1901",
-    "text": "病床にあり。今日は少し暖かい。",
-    "source": "https://www.aozora.gr.jp/"
-  },
-  {
-    "date": "03-04",
-    "author": "Samuel Pepys",
+    "author": {
+      "name": "Samuel Pepys",
+      "birth_year": 1633,
+      "death_year": 1703,
+      "summary": "17世紀イングランドの海軍官僚。1660年代の日記はロンドン大火やペスト流行期の貴重な記録として知られる。",
+      "reference_label": "Wikipedia",
+      "reference_url": "https://en.wikipedia.org/wiki/Samuel_Pepys"
+    },
     "year": "1665",
-    "text": "Up early and to the office.",
-    "source": "https://www.gutenberg.org/"
+    "original_language": "en",
+    "text_original": "Up early and to the office.",
+    "text_translation": "早く起きて役所へ行く。",
+    "source": "https://www.gutenberg.org/ebooks/4200"
   }
 ]
