@@ -5,14 +5,46 @@
       "name": "Samuel Pepys",
       "birth_year": 1633,
       "death_year": 1703,
-      "summary": "17世紀イングランドの海軍官僚。1660年代の日記はロンドン大火やペスト流行期の貴重な記録として知られる。",
+      "summary": "17世紀イングランドの海軍官僚。ロンドン大火やペスト流行期の記録で知られる。",
       "reference_label": "Wikipedia",
       "reference_url": "https://en.wikipedia.org/wiki/Samuel_Pepys"
     },
     "year": "1665",
     "original_language": "en",
-    "text_original": "Up early and to the office, where I found much business waiting upon me, and several letters from men of importance requiring answer with haste. After this I did meet with Mr. Coventry, and we discoursed at length concerning the condition of the fleet and the great charge that now lieth upon the King’s purse. At noon I returned home to dinner, where my wife was in good humour, and we spoke of household matters and the price of provisions, which grow dearer every week. In the afternoon to Whitehall, and there attended upon my Lord, who seemed troubled in mind, though he would not plainly say the cause. So home late, my mind much exercised with thoughts of the sickness spreading in the city, and the uncertainty of all worldly affairs.",
-    "text_translation": "早く起きて役所へ向かうと、多くの仕事が私を待っており、重要人物からの手紙にも急ぎ返答せねばならなかった。その後コヴェントリー氏と会い、艦隊の状況や国王の財政に重くのしかかる負担について長く語り合った。正午には帰宅して昼食をとり、妻と家計や物価の高騰について話した。午後にはホワイトホールへ出向き、閣下に付き従うが、彼は何か心に悩みを抱えている様子であった。夜遅く帰宅し、市内に広がる疫病と世の不確かさについて思いを巡らせた。",
+    "text_original": "Up early and to the office, where I found much business waiting upon me. The town talks much of the sickness, and many are afraid.",
+    "text_translation": "早く起きて役所へ行く。多くの仕事が待っていた。街では疫病の噂でもちきりで、人々は不安に包まれている。",
     "source": "https://www.gutenberg.org/ebooks/4200"
+  },
+  {
+    "date": "03-04",
+    "author": {
+      "name": "Anne Frank",
+      "birth_year": 1929,
+      "death_year": 1945,
+      "summary": "第二次世界大戦中、隠れ家で日記を書いたユダヤ系少女。その記録は世界的に読まれている。",
+      "reference_label": "Wikipedia",
+      "reference_url": "https://en.wikipedia.org/wiki/Anne_Frank"
+    },
+    "year": "1944",
+    "original_language": "nl",
+    "text_original": "I still believe, in spite of everything, that people are truly good at heart.",
+    "text_translation": "それでもなお、人は本来善良な心を持っていると私は信じています。",
+    "source": "https://en.wikipedia.org/wiki/The_Diary_of_a_Young_Girl"
+  },
+  {
+    "date": "03-04",
+    "author": {
+      "name": "Virginia Woolf",
+      "birth_year": 1882,
+      "death_year": 1941,
+      "summary": "イギリスのモダニズム文学を代表する作家。内面意識の描写で知られる。",
+      "reference_label": "Wikipedia",
+      "reference_url": "https://en.wikipedia.org/wiki/Virginia_Woolf"
+    },
+    "year": "1925",
+    "original_language": "en",
+    "text_original": "The mind receives a myriad impressions—trivial, fantastic, evanescent, or engraved with the sharpness of steel.",
+    "text_translation": "心は無数の印象を受け取る――取るに足らぬもの、幻想的なもの、儚いもの、あるいは鋼のように鋭く刻まれるもの。",
+    "source": "https://en.wikipedia.org/wiki/Virginia_Woolf"
   }
 ]
