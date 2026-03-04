@@ -7,207 +7,223 @@
 <style>
 body {
   font-family: sans-serif;
-  margin: 0;
-  padding-top: 70px;
-  background: #f7f7f7;
-}
-
-/* 固定ヘッダー */
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-  padding: 15px 20px;
-  font-size: 18px;
-  font-weight: bold;
-  border-bottom: 1px solid #ddd;
-  z-index: 1000;
-}
-
-/* タイムライン */
-.timeline {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
+  padding: 80px 20px 40px 20px;
+  line-height: 1.7;
+  background: #fafafa;
 }
 
-/* 投稿カード */
+.site-title {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
 .entry {
-  background: white;
-  padding: 15px;
-  border-bottom: 1px solid #e5e5e5;
-  position: relative;
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
 }
 
-/* ヘッダー部 */
-.entry-header {
+.header {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
 }
 
-.avatar {
-  width: 50px;
-  height: 50px;
+.icon {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
   background: #ccc;
-  margin-right: 10px;
 }
 
 .name-line {
-  font-size: 16px;
+  font-size: 1em;
 }
 
 .life {
-  font-size: 13px;
+  font-size: 0.8em;
   color: #888;
-  margin-left: 8px;
+  margin-left: 6px;
 }
 
-/* 本文 */
 .main-text {
-  font-size: 18px;
-  line-height: 1.6;
   margin: 10px 0;
-  white-space: pre-line;
+  white-space: pre-wrap;
 }
 
-/* 原文 */
-.original-text {
-  font-size: 18px;
-  line-height: 1.6;
-  margin-top: 10px;
-  display: none;
-  white-space: pre-line;
-}
-
-/* ボタン */
-.toggle-btn {
-  font-size: 13px;
+.more-btn {
+  font-size: 1em;
+  margin-top: 5px;
+  color: #1da1f2;
+  cursor: pointer;
   background: none;
   border: none;
-  color: #1d9bf0;
+  padding: 0;
+}
+
+.sub-text {
+  margin-top: 15px;
+  color: #444;
+  display: none;
+  white-space: pre-wrap;
+}
+
+.meta-line {
+  font-size: 0.75em;
+  color: #777;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.original-btn {
+  font-size: 0.75em;
+  background: none;
+  border: none;
+  color: #1da1f2;
   cursor: pointer;
   padding: 0;
-  margin-top: 5px;
 }
 
-/* 左下 日付 */
-.meta-left {
-  font-size: 12px;
-  color: #888;
-  position: absolute;
-  bottom: 8px;
-  left: 15px;
-}
-
-/* 右下 略歴 */
-.meta-right {
-  font-size: 12px;
-  color: #666;
-  position: absolute;
-  bottom: 8px;
-  right: 15px;
-  max-width: 55%;
+.bio {
+  font-size: 0.75em;
+  color: #777;
   text-align: right;
+  margin-top: 10px;
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">今日の誰かの日記</div>
-
-<div class="timeline" id="diary"></div>
+<div class="site-title">今日の誰かの日記</div>
+<div id="diary"></div>
 
 <script>
-
-function toggleMain(button) {
-  const text = button.parentElement.querySelector(".main-text");
-  const full = button.dataset.full;
-  const short = button.dataset.short;
-
-  if (button.textContent === "続きを読む") {
-    text.textContent = full;
-    button.textContent = "小さくまとめる";
-  } else {
-    text.textContent = short;
-    button.textContent = "続きを読む";
-  }
+const data = [
+{
+  date: "03-04",
+  year: "1665",
+  author: {
+    name: "Samuel Pepys",
+    birth_year: 1633,
+    death_year: 1703,
+    icon_url: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Samuel_Pepys_by_John_Hayls.jpg",
+    summary: "17世紀イングランドの海軍官僚。日記はロンドン大火などの貴重な記録。",
+    reference_url: "https://en.wikipedia.org/wiki/Samuel_Pepys"
+  },
+  text_original:
+`Up early and to the office. There we sat all the morning, and I much troubled in mind about public matters and the state of the Navy... (長文テスト用に続く文章がここに入ります。何行も続く長文を想定しています。)`,
+  text_translation:
+`早く起きて役所へ向かう。午前中は会議が続き、海軍の状況や国の行く末について考え続けた。
+（長文テスト用）この文章は折りたたみ機能を確認するために意図的に長くしている。何行にもわたって続く日本語文章がここに表示される。`
+},
+{
+  date: "03-04",
+  year: "1872",
+  author: {
+    name: "Mark Twain",
+    birth_year: 1835,
+    death_year: 1910,
+    icon_url: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Mark_Twain_by_AF_Bradley.jpg",
+    summary: "アメリカの作家・風刺家。",
+    reference_url: "https://en.wikipedia.org/wiki/Mark_Twain"
+  },
+  text_original:
+`This morning I awoke with a curious sense of determination... (長文テスト)`,
+  text_translation:
+`今朝は妙な決意とともに目覚めた。世界は静かだったが、心の中では様々な思索が渦巻いていた。
+（長文テスト）折りたたみが正しく機能するか確認するため、文章を長くしている。`
+},
+{
+  date: "03-04",
+  year: "1905",
+  author: {
+    name: "Franz Kafka",
+    birth_year: 1883,
+    death_year: 1924,
+    icon_url: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Kafka1906_cropped.jpg",
+    summary: "20世紀文学を代表する作家。",
+    reference_url: "https://en.wikipedia.org/wiki/Franz_Kafka"
+  },
+  text_original:
+`Today I felt the peculiar weight of existence... (長文テスト)`,
+  text_translation:
+`今日は存在の重みを奇妙に強く感じた。机に向かいながら、自分の内側に潜む不安を見つめ続けた。
+（長文テスト）さらに文章を追加して折りたたみ動作を確認する。`
 }
+];
 
-function toggleOriginal(button) {
-  const original = button.parentElement.querySelector(".original-text");
-  if (original.style.display === "none") {
-    original.style.display = "block";
-    button.textContent = "原文を隠す";
-  } else {
-    original.style.display = "none";
-    button.textContent = "原文を表示";
-  }
-}
+const previewLength = 220;
+const diaryDiv = document.getElementById("diary");
 
-fetch("data.json")
-.then(response => response.json())
-.then(data => {
+data.forEach(item => {
 
-  const today = new Date();
-  const month = String(today.getMonth()+1).padStart(2,'0');
-  const day = String(today.getDate()).padStart(2,'0');
-  const todayKey = month + "-" + day;
+  const fullText = item.text_translation;
+  const shortText = fullText.length > previewLength
+    ? fullText.slice(0, previewLength) + "..."
+    : fullText;
 
-  const filtered = data.filter(item => item.date === todayKey);
-  const diaryDiv = document.getElementById("diary");
+  const entry = document.createElement("div");
+  entry.className = "entry";
 
-  filtered.forEach(item => {
-
-    const previewLength = 150;
-    const fullText = item.text_translation;
-    const shortText = fullText.length > previewLength
-      ? fullText.substring(0, previewLength) + "..."
-      : fullText;
-
-    diaryDiv.innerHTML += `
-      <div class="entry">
-
-        <div class="entry-header">
-          <div class="avatar"></div>
-          <div class="name-line">
-            ${item.author.name}
-            <span class="life">
-              ${item.author.birth_year}–${item.author.death_year}
-            </span>
-          </div>
-        </div>
-
-        <div class="main-text">${shortText}</div>
-
-        <button class="toggle-btn"
-          data-full="${fullText.replace(/"/g,'&quot;')}"
-          data-short="${shortText.replace(/"/g,'&quot;')}"
-          onclick="toggleMain(this)">
-          続きを読む
-        </button>
-
-        <button class="toggle-btn" onclick="toggleOriginal(this)">
-          原文を表示
-        </button>
-
-        <div class="original-text">
-          ${item.text_original}
-        </div>
-
-        <div class="meta-left">
-          ${item.year}年 ${todayKey}
-        </div>
-
-        <div class="meta-right">
-          ${item.author.summary}
-        </div>
-
+  entry.innerHTML = `
+    <div class="header">
+      <img class="icon" src="${item.author.icon_url}">
+      <div class="name-line">
+        ${item.author.name}
+        <span class="life">${item.author.birth_year}-${item.author.death_year}</span>
       </div>
-    `;
+    </div>
+
+    <p class="main-text">${shortText}</p>
+    <button class="more-btn">続きを読む</button>
+
+    <div class="sub-text">${item.text_original}</div>
+
+    <div class="meta-line">
+      <span>${item.year}年 ${item.date}</span>
+      <button class="original-btn">原文を表示</button>
+    </div>
+
+    <div class="bio">
+      ${item.author.summary}
+      <a href="${item.author.reference_url}" target="_blank">[略歴]</a>
+    </div>
+  `;
+
+  const mainText = entry.querySelector(".main-text");
+  const moreBtn = entry.querySelector(".more-btn");
+  const subText = entry.querySelector(".sub-text");
+  const originalBtn = entry.querySelector(".original-btn");
+
+  moreBtn.addEventListener("click", () => {
+    const expanded = moreBtn.textContent === "閉じる";
+    if (expanded) {
+      mainText.textContent = shortText;
+      moreBtn.textContent = "続きを読む";
+    } else {
+      mainText.textContent = fullText;
+      moreBtn.textContent = "閉じる";
+    }
   });
 
+  originalBtn.addEventListener("click", () => {
+    subText.style.display =
+      subText.style.display === "block" ? "none" : "block";
+  });
+
+  diaryDiv.appendChild(entry);
 });
 </script>
 
