@@ -34,8 +34,6 @@ body {
   background: white;
   padding: 15px;
   border-bottom: 1px solid #e5e5e5;
-  position: relative;
-  padding-bottom: 45px;
 }
 
 .entry-header {
@@ -64,7 +62,7 @@ body {
 .main-text {
   font-size: 18px;
   line-height: 1.6;
-  margin: 10px 0 3px 0; /* 下を少し詰めた */
+  margin: 10px 0 3px 0;
   white-space: pre-line;
 }
 
@@ -93,29 +91,29 @@ body {
   margin-left: 10px;
 }
 
-/* 本文直下の略歴 */
-.bio-block {
+/* 下部メタ行 */
+.meta-line {
+  display: flex;
+  align-items: center;
   font-size: 12px;
   color: #666;
-  margin-top: 6px; /* ここで1行詰めた */
+  margin-top: 15px;
+}
+
+.meta-date {
+  margin-right: 10px;
+  color: #888;
+}
+
+.meta-summary {
+  flex: 1;
+  color: #666;
 }
 
 .source-link {
-  display: block;
-  text-align: left;
   color: #1d9bf0;
-  font-size: 12px;
-  margin-top: 3px;
-}
-
-.meta-left {
-  font-size: 12px;
-  color: #888;
-  position: absolute;
-  bottom: 8px;
-  left: 15px;
-  display: flex;
-  align-items: center;
+  text-decoration: none;
+  margin-left: 10px;
 }
 </style>
 </head>
@@ -195,20 +193,23 @@ fetch("data.json")
           </span>
         ` : ""}
 
-        <div class="bio-block">
-          ${item.author.summary}
+        <div class="original-text">${item.text_original}</div>
+
+        <div class="meta-line">
+          <span class="meta-date">
+            ${item.year}年 ${todayKey}
+            <button class="toggle-btn" onclick="toggleOriginal(this)">
+              原文を表示
+            </button>
+          </span>
+
+          <span class="meta-summary">
+            ${item.author.summary}
+          </span>
+
           <a class="source-link" href="${item.source}" target="_blank">
             出典を見る
           </a>
-        </div>
-
-        <div class="original-text">${item.text_original}</div>
-
-        <div class="meta-left">
-          ${item.year}年 ${todayKey}
-          <button class="toggle-btn" onclick="toggleOriginal(this)">
-            原文を表示
-          </button>
         </div>
 
       </div>
