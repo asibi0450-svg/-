@@ -1,161 +1,222 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Diary Test</title>
+<title>今日の誰かの日記</title>
+
 <style>
 body {
   font-family: sans-serif;
-}
-
-.entry {
-  border-bottom: 1px solid #ccc;
-  padding: 20px 0;
+  margin: 0;
+  padding-top: 70px;
+  background: #f7f7f7;
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  z-index: 1000;
 }
 
-.icon {
-  width: 80px;
-  height: 80px;
+.timeline {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.entry {
+  background: white;
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.entry-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
   object-fit: cover;
-  border-radius: 50%;
+  margin-right: 10px;
 }
 
-.icon-placeholder {
-  width: 80px;
-  height: 80px;
+.name-line {
+  font-size: 16px;
 }
 
-.meta {
-  flex: 1;
+.life {
+  font-size: 13px;
+  color: #888;
+  margin-left: 8px;
 }
 
-.date-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.main-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 10px 0 3px 0;
+  white-space: pre-line;
 }
 
-.buttons {
-  display: flex;
-  gap: 15px;
+.read-more {
+  font-size: 18px;
+  color: #1d9bf0;
+  cursor: pointer;
+  display: inline;
 }
 
-button {
+.original-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-top: 10px;
+  display: none;
+  white-space: pre-line;
+}
+
+.toggle-btn {
+  font-size: 12px;
   background: none;
   border: none;
-  color: blue;
+  color: #1d9bf0;
   cursor: pointer;
-  font-size: 14px;
   padding: 0;
+  margin-left: 10px;
 }
 
-.summary {
-  margin-top: 5px;
+/* 下部メタ行 */
+.meta-line {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+  margin-top: 15px;
 }
 
-.text {
-  margin-top: 10px;
+.meta-date {
+  margin-right: 10px;
+  color: #888;
 }
 
-.hidden {
-  display: none;
+.meta-summary {
+  flex: 1;
+  color: #666;
+}
+
+.source-link {
+  color: #1d9bf0;
+  text-decoration: none;
+  margin-left: 10px;
 }
 </style>
 </head>
 <body>
 
-<div id="container"></div>
+<div class="header">今日の誰かの日記</div>
+<div class="timeline" id="diary"></div>
 
 <script>
-const data = {
-  date: "1665-03-04",
-  author: {
-    name: "Samuel Pepys",
-    icon_url: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Samuel_Pepys_by_John_Hayls.jpg", // ← テスト用画像
-    summary: "17世紀イングランドの海軍官僚・日記作者。",
-    reference_label: "Wikipedia",
-    reference_url: "https://en.wikipedia.org/wiki/Samuel_Pepys"
-  },
-  text_original: "Up betimes and to the office...",
-  text_translation: "朝早く起きて役所へ行った。"
-};
 
-function renderEntry(entry) {
-  const container = document.getElementById("container");
+function toggleMain(span) {
+  const entry = span.closest(".entry");
+  const textDiv = entry.querySelector(".main-text");
+  const full = span.dataset.full;
+  const short = span.dataset.short;
 
-  const div = document.createElement("div");
-  div.className = "entry";
-
-  const header = document.createElement("div");
-  header.className = "header";
-
-  // アイコン処理
-  if (entry.author.icon_url) {
-    const img = document.createElement("img");
-    img.src = entry.author.icon_url;
-    img.className = "icon";
-    header.appendChild(img);
+  if (span.textContent === "続きを読む") {
+    textDiv.textContent = full;
+    span.textContent = "小さくまとめる";
   } else {
-    const placeholder = document.createElement("div");
-    placeholder.className = "icon-placeholder";
-    header.appendChild(placeholder);
+    textDiv.textContent = short;
+    span.textContent = "続きを読む";
   }
-
-  const meta = document.createElement("div");
-  meta.className = "meta";
-
-  const dateLine = document.createElement("div");
-  dateLine.className = "date-line";
-
-  const dateSpan = document.createElement("span");
-  dateSpan.textContent = entry.date;
-
-  const buttons = document.createElement("div");
-  buttons.className = "buttons";
-
-  const bioBtn = document.createElement("button");
-  bioBtn.textContent = "略歴";
-
-  const refBtn = document.createElement("button");
-  refBtn.textContent = "出典を見る";
-  refBtn.onclick = () => {
-    window.open(entry.author.reference_url, "_blank");
-  };
-
-  buttons.appendChild(bioBtn);
-  buttons.appendChild(refBtn);
-
-  dateLine.appendChild(dateSpan);
-  dateLine.appendChild(buttons);
-
-  const summary = document.createElement("div");
-  summary.className = "summary hidden";
-  summary.textContent = entry.author.summary;
-
-  bioBtn.onclick = () => {
-    summary.classList.toggle("hidden");
-  };
-
-  const text = document.createElement("div");
-  text.className = "text";
-  text.textContent = entry.text_translation;
-
-  meta.appendChild(dateLine);
-  meta.appendChild(summary);
-  meta.appendChild(text);
-
-  header.appendChild(meta);
-  div.appendChild(header);
-  container.appendChild(div);
 }
 
-renderEntry(data);
+function toggleOriginal(button) {
+  const entry = button.closest(".entry");
+  const original = entry.querySelector(".original-text");
+
+  if (original.style.display === "none") {
+    original.style.display = "block";
+    button.textContent = "原文を隠す";
+  } else {
+    original.style.display = "none";
+    button.textContent = "原文を表示";
+  }
+}
+
+fetch("data.json")
+.then(response => response.json())
+.then(data => {
+
+  const todayKey = "03-04";
+
+  const filtered = data.filter(item => item.date === todayKey);
+  const diaryDiv = document.getElementById("diary");
+
+  filtered.forEach(item => {
+
+    const previewLength = 130;
+    const fullText = item.text_translation;
+    const shortText = fullText.length > previewLength
+      ? fullText.substring(0, previewLength) + "..."
+      : fullText;
+
+    diaryDiv.innerHTML += `
+      <div class="entry">
+
+        <div class="entry-header">
+          <img class="avatar" src="${item.author.icon_url}" alt="">
+          <div class="name-line">
+            ${item.author.name}
+            <span class="life">
+              ${item.author.birth_year}–${item.author.death_year}
+            </span>
+          </div>
+        </div>
+
+        <div class="main-text">${shortText}</div>
+
+        ${fullText.length > previewLength ? `
+          <span class="read-more"
+            data-full="${fullText.replace(/"/g,'&quot;')}"
+            data-short="${shortText.replace(/"/g,'&quot;')}"
+            onclick="toggleMain(this)">
+            続きを読む
+          </span>
+        ` : ""}
+
+        <div class="original-text">${item.text_original}</div>
+
+        <div class="meta-line">
+          <span class="meta-date">
+            ${item.year}年 ${todayKey}
+            <button class="toggle-btn" onclick="toggleOriginal(this)">
+              原文を表示
+            </button>
+          </span>
+
+          <span class="meta-summary">
+            ${item.author.summary}
+          </span>
+
+          <a class="source-link" href="${item.source}" target="_blank">
+            出典を見る
+          </a>
+        </div>
+
+      </div>
+    `;
+  });
+
+});
 </script>
 
 </body>
